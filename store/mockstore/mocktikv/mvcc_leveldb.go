@@ -115,6 +115,7 @@ func NewMVCCLevelDB(path string) (*MVCCLevelDB, error) {
 		d   *leveldb.DB
 		err error
 	)
+	logutil.BgLogger().Info("leveldb file path:"+path)
 	if path == "" {
 		d, err = leveldb.Open(storage.NewMemStorage(), nil)
 	} else {
