@@ -72,14 +72,21 @@ func EncodeRowKeyWithHandle(tableID int64, handle int64) kv.Key {
 // DecodeRecordKey decodes the key and gets the tableID, handle.
 func DecodeRecordKey(key kv.Key) (tableID int64, handle int64, err error) {
 	/* Your code here */
-	buff, handle, err := codec.DecodeInt(key)
-	if err != nil {
-		return 0, handle, err
+	if key == nil{
+		return 0, 0, errors.New("key is null")
 	}
-	//去掉前后两个前缀
-	buff = buff[len(tablePrefix):]
-	buff = buff[:len(buff)-len(recordPrefixSep)]
-	_, tableID, err = codec.DecodeInt(buff)
+	if key[0] != tablePrefix[0] {
+		return 0, 0, errors.New("key prefix is wrong")
+	}
+	//去掉t_前缀
+	key=key[len(tablePrefix):]
+	key, tableID, err = codec.DecodeInt(key)
+	if err != nil {
+		return 0, 0, err
+	}
+	//去掉r_前缀
+	key=key[len(recordPrefixSep):]
+	_, handle, err = codec.DecodeInt(key)
 	return tableID, handle, err
 }
 
