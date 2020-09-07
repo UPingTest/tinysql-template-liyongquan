@@ -196,7 +196,9 @@ func (s *testLexerSuite) TestscanString(c *C) {
 		{`' \n\tTest String'`, " \n\tTest String"},
 		{`'\x\B'`, "xB"},
 		{`'\0\'\"\b\n\r\t\\'`, "\000'\"\b\n\r\t\\"},
-		{`'\Z'`, string(26)},
+		//{`'\Z'`, string(26)},
+		//怀疑这里是官方写错了，把这个类型转换做下纠正
+		{`'\Z'`, string(rune(26))},
 		{`'\%\_'`, `\%\_`},
 		{`'hello'`, "hello"},
 		{`'"hello"'`, `"hello"`},
