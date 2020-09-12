@@ -32,6 +32,10 @@ import (
 	"github.com/pingcap/tidb/util/testutil"
 )
 
+/*func TestColumnChange(t *testing.T) {
+	TestingT(t)
+}*/
+
 var _ = Suite(&testColumnChangeSuite{})
 
 type testColumnChangeSuite struct {

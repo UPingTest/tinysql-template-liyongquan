@@ -6,7 +6,7 @@ DDL(Data Definition Language) 数据模式定义语言，是用来描述数据�
 
 ## 异步 schema 变更
 
-TinySQL 中的异步 schema 变更是参照了 Google F1 中的 schema 变更的算法。F1 的原始论文可以在[http://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf] 中找到。同时在[这里](https://github.com/ngaut/builddatabase/blob/master/f1/schema-change.md)有一份中文版的说明。
+TinySQL 中的异步 schema 变更是参照了 Google F1 中的 schema 变更的算法。F1 的原始论文可以在[static.googleusercontent.com](http://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf) 中找到。同时在[这里](https://github.com/ngaut/builddatabase/blob/master/f1/schema-change.md) 有一份中文版的说明。
 
 ## 理解代码
 
@@ -23,7 +23,7 @@ TinySQL 中的代码主要在包目录 `ddl` 中。其中下述文件包含了 `
 
 这里我们主要以 `CreateTable` 语句来介绍一下代码中的实现逻辑。
 
-`create table` 需要把 table 的元信息（[TableInfo](https://github.com/pingcap-incubator/tinysql/blob/course/parser/model/model.go#L180)）从 SQL 中解析出来，做一些检查，然后把 table 的元信息持久化保存到 TiKV 中。在 DDL 包中，对外暴露的接口是 [CreateTable](https://github.com/pingcap-incubator/tinysql/blob/course/ddl/ddl_api.go#L846)。这个函数会在执行层中调用。其主要流程如下：
+`create table` 需要把 table 的元信息（ [TableInfo](https://github.com/pingcap-incubator/tinysql/blob/course/parser/model/model.go#L180) ）从 SQL 中解析出来，做一些检查，然后把 table 的元信息持久化保存到 TiKV 中。在 DDL 包中，对外暴露的接口是 [CreateTable](https://github.com/pingcap-incubator/tinysql/blob/course/ddl/ddl_api.go#L846) 。这个函数会在执行层中调用。其主要流程如下：
 
 * 会先 check 一些限制，比如 table name 是否已经存在，table 名是否太长，是否有重复定义的列等等限制。
 * [buildTableInfo](https://github.com/pingcap-incubator/tinysql/blob/course/ddl/ddl_api.go#L712) 获取 global table ID，生成 `tableInfo` , 即 table 的元信息，然后封装成一个 DDL job，这个 job 包含了 `table ID` 和 `tableInfo`，并将这个 job 的 type 标记为 `ActionCreateTable`。
